@@ -43,37 +43,24 @@
 // ноль можно считать положительным числом.
 
 
-// var a = 0, b = -15;
-//
-// if (a >= 0 && b >= 0) {
-//     console.log('a и b >= 0, их разность =', a - b);
-// }
-//
-// if (a < 0 && b < 0) {
-//     console.log('a и b < 0, их произведение =', a * b);
-// }
-//
-// if (a < 0 && b >= 0 || a >= 0 && b < 0) {
-//     console.log('a и b < 0, их произведение =', a + b);
-// }
+var a = 0, b = -15;
+
+if (a >= 0 && b >= 0) {
+    console.log('a и b >= 0, их разность =', a - b);
+}
+
+if (a < 0 && b < 0) {
+    console.log('a и b < 0, их произведение =', a * b);
+}
+
+if (a < 0 && b >= 0 || a >= 0 && b < 0) {
+    console.log('a и b < 0, их сумма =', a + b);
+}
 
 
 // 4. Присвоить переменной а
 // значение в промежутке [0..15]. С помощью оператора switch организовать вывод чисел от a до 15. 5.
-// Реализовать основные 4 арифметические операции в виде функций с двумя параметрами.           О
-// бязательно использовать оператор return. 6. Реализовать функцию с тремя параметрами:
-// function mathOperation(arg1, arg2, operation), где
-// arg1, arg2 – значения аргументов, operation – строка с названием операции. В зависимости от
-// переданного значения операции выполнить одну из арифметических операций (использовать
-// функции из пункта 3) и вернуть полученное значение (использовать switch).
 
-// function getRandomInt(min, max) {
-//     min = Math.ceil(min);
-//     max = Math.floor(max);
-//     var randomNumber = Math.floor(Math.random() * (max - min)) + min;
-//     return randomNumber; //Максимум не включается, минимум включается
-// }
-//
 // var a = getRandomInt(0, 16);
 //
 // switch (a) {
@@ -111,6 +98,63 @@
 //         console.log('16');
 // }
 
+
+// 5. Реализовать основные 4 арифметические операции в виде функций с двумя параметрами.
+// Обязательно использовать оператор return.
+// 6. Реализовать функцию с тремя параметрами:
+// function mathOperation(arg1, arg2, operation), где
+// arg1, arg2 – значения аргументов, operation – строка с названием операции. В зависимости от
+// переданного значения операции выполнить одну из арифметических операций (использовать
+// функции из пункта 3) и вернуть полученное значение (использовать switch).
+
+function division(a, b) {
+    if (b !== 0) {
+        var result = a / b;
+        console.log('a / b = ' + result);
+        return result;
+    } else {
+        return console.log('Деление на ноль');
+    }
+}
+
+function addition(a, b) {
+    var result = a + b;
+    console.log('a + b = ' + result);
+    return result;
+}
+
+function multiplication(a, b) {
+    var result = a * b;
+    console.log('a * b = ' + result);
+    return result;
+}
+
+function subtraction(a, b) {
+    var result = a - b;
+    console.log('a - b = ' + result);
+    return result;
+}
+
+function mathOperation(arg1, arg2, operation) {
+    switch (operation) {
+        case '+': return addition(a, b);
+        case '-': return subtraction(a, b);
+        case '*': return multiplication(a, b);
+        case '/': return division(a, b);
+    }
+}
+
+var a = 11, b = 0;
+mathOperation(a, b, '/');
+
+// function getRandomInt(min, max) {
+//     min = Math.ceil(min);
+//     max = Math.floor(max);
+//     var randomNumber = Math.floor(Math.random() * (max - min)) + min;
+//     return randomNumber; //Максимум не включается, минимум включается
+// }
+//
+
 // 7. * Сравнить null и 0. Попробуйте объяснить результат.
 
 // alert(null > 0);  // (1) false
@@ -128,12 +172,12 @@
 // 8. *С помощью рекурсии организовать функцию возведения числа в степень. Формат: function
 // power(val, pow), где val – заданное число, pow – степень.
 
-
-function power(val, pow) {
-    if (pow != 1) {
-        return val * power(val, pow - 1);
-    } else {
-        return val;
-    }
-}
-console.log(power(2,10));
+//
+// function power(val, pow) {
+//     if (pow !== 1) {
+//         return val * power(val, pow - 1);
+//     } else {
+//         return val;
+//     }
+// }
+// console.log(power(2,10));
