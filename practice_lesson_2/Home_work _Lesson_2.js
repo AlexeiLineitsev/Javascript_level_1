@@ -104,8 +104,8 @@ if (a < 0 && b >= 0 || a >= 0 && b < 0) {
 // 6. Реализовать функцию с тремя параметрами:
 // function mathOperation(arg1, arg2, operation), где
 // arg1, arg2 – значения аргументов, operation – строка с названием операции. В зависимости от
-// переданного значения операции выполнить одну из арифметических операций (использовать
-// функции из пункта 3) и вернуть полученное значение (использовать switch).
+// переданного значения операции выполнить одну из арифметических операций и
+// вернуть полученное значение (использовать switch).
 
 function division(a, b) {
     if (b !== 0) {
@@ -141,6 +141,7 @@ function mathOperation(arg1, arg2, operation) {
         case '-': return subtraction(a, b);
         case '*': return multiplication(a, b);
         case '/': return division(a, b);
+        default: console.log('Ошибка');
     }
 }
 
