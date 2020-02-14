@@ -25,26 +25,79 @@
 
 //-------------------------------------------------------------УГАДАЙ ЧИСЛО---------------------------------------------
 
+//
+//
+//
+// var count = 0; // Счетких неверных попыток
+// var randomNumber;
+//
+// function getRandomInt(min, max) {
+//     min = Math.ceil(min);
+//     max = Math.floor(max);
+//     randomNumber = Math.floor(Math.random() * (max - min)) + min;
+//     return randomNumber; //Максимум не включается, минимум включается
+// }
+//
+// function checkAnswer() {
+//     var answer = document.getElementById('inp_3').value;
+//     console.log(answer);
+//     console.log(randomNumber);
+// }
+//
+// function getRandom() {
+//     randomNumber = getRandomInt(document.getElementById('inp_1').value, document.getElementById('inp_2').value);
+//     console.log('в ', randomNumber);
+// }
 
+//----------------------------------------------------------------------------------------------------------------------
+// Теперь попробуем написать нашу первую игру. Начнём мы с простого и реализуем игру «Угадай
+// число». Браузер будет загадывать случайное четырёхзначное число, а мы будем пытаться его
+// отгадать.
+//
+//Попытки отгадать число будут идти через диалоговое окно – prompt. Браузер будет сообщать в ответ,
+// больше или меньше загаданного наше предположение.
+//
+//Алгоритм будет таким:
+//
+//1. Браузер генерирует число и приглашает пользователя к игре.
+// 2. Выводится окно запроса предположения.
+// 3. Браузер проверяет число и возвращает результат.
+// 4. Повторяем до тех пор, пока число не будет угадано.
+// 5. Как только число угадано, браузер сбрасывает число попыток и генерирует новое число.
+//
+// Пока мы не будем ничего выводить на саму страницу. И пока наш алгоритм будет далёк от
+// совершенства. Но как только мы изучим новые возможности языка, то сразу улучшим его.
 
+function generateNumber(from, before) {
+    return Math.round(from + Math.random() * (before - from));
+}
+function checkNumber(number, unknownNumber) {
+    if (number == unknownNumber) {
+        alert('Вы угадали, число попыток - ' + i);
+    }
 
-var count = 0; // Счетких неверных попыток
-var randomNumber;
+    if (number > unknownNumber) {
+        alert('Меньше');
+    }
 
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    randomNumber = Math.floor(Math.random() * (max - min)) + min;
-    return randomNumber; //Максимум не включается, минимум включается
+    if (number < unknownNumber) {
+        alert('Больше');
+    }
 }
 
-function checkAnswer() {
-    var answer = document.getElementById('inp_3').value;
-    console.log(answer);
-    console.log(randomNumber);
-}
 
-function getRandom() {
-    randomNumber = getRandomInt(document.getElementById('inp_1').value, document.getElementById('inp_2').value);
-    console.log('в ', randomNumber);
-}
+
+
+var unknownNumber = generateNumber(1000, 9999);
+alert('Браузер cгенерировал число - ' + unknownNumber);
+
+let number;
+let i = 0;
+
+do {
+    number = prompt('Ваше 4-х число - ' + '\nЧисло попыток - ' + i++);
+    checkNumber(number, unknownNumber);
+
+} while (number != unknownNumber);
+
+
