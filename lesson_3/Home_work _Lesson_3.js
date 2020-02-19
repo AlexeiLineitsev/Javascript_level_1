@@ -2,45 +2,32 @@
 
 // 1. С помощью цикла while вывести все простые числа в промежутке от 0 до 100
 
-function deleteArrayElem(array, p, n) {
-    let result = 0;
+function isPrime(num) {
+    if(num < 2) return false;
 
-    for (let i = 0; i <= n - 1; i++) {
-        result = array[i] * p;
-        let check_result = array.indexOf(result);
-        if (check_result !== -1) {
-            delete array[check_result];
+    let i = 2;
+    while(i < num) {
+        if(num % i === 0) {
+            return false;
         }
+        i++;
     }
-    array = array.filter(function (x) {
-        return x !== undefined && x !== null; // Чистим массив от пустых записей
-    });
-    return array;
+    return true;
 }
 
+function getPrimes(max) {
+    var i = 0;
+    var list = []; // console.log(i)
 
-var number = [];
-let n = 100;
+    while(i < max) {
+        if(isPrime(i)) list.push(i);
+        i++;
+    }
 
-for (let i = 2; i <= n; i++) { //Заполняем массив
-    number.push(i);
+    console.log(list);
 }
 
-
-let i = 0;
-let p = 0;
-
-while (i < n - 1) {
-    p = number[i];
-
-    if (p * p > n) {
-        break;
-    } // Условия выхода по формуле Эратосфера
-    number = deleteArrayElem(number, p, n);
-    i++;
-}
-
-console.log(number);
+getPrimes(100);
 
 
 // 2. С помощью цикла do…while написать функцию для вывода чисел от 0 до 10, чтобы результат выглядел так:
