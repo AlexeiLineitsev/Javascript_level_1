@@ -1,0 +1,78 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.show-full-img {
+    width: 500px;
+    height: 330px;
+    box-shadow: 5px 11px 15px 0px rgba(0, 0, 0, 0.6);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.show-full-img img {
+    width: 100%;
+}
+
+.slider {
+    margin-top: 50px;
+}
+
+.slider__img {
+    height: 100px;
+    cursor: pointer;
+    box-shadow: 5px 11px 15px 0px rgba(0, 0, 0, 0.6);
+    filter: brightness(0.7);
+}
+
+.slider__img:hover {
+    transform: scale(1.09);
+    filter: none;
+}
+
+.arrow {
+    width: inherit;
+    height: inherit;
+    position: absolute;
+}
+
+.arrow a:hover {
+    cursor: pointer;
+}
+
+
+.arr {
+    position: relative;
+    top: 43%;
+
+}
+
+.arr img {
+    width: 50px;
+    opacity: 0.5;
+}
+
+
+
+.arr img:hover {
+    opacity: 1;
+}
+
+
+
+.left {
+    float: left;
+}
+
+
+.right {
+    float: right;
+}
+
+/* Комментарий--------------------------------------------------------------------- */
+
+
