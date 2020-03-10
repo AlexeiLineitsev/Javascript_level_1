@@ -38,6 +38,10 @@ body {
   background: red;
 }
 
+.crash-unit {
+  background-color: aqua;
+}
+
 #score {
   color: #eee;
   position: absolute;
