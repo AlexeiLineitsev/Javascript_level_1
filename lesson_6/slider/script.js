@@ -1,14 +1,12 @@
 var bigImage = document.querySelector('#current');
 
 function init() {
-    var nameFileFoto = getArrayNameFoto();
+  
     var slider = document.querySelector('.slider');
     slider.addEventListener('click', changeBigPicture);
 
     var alink = document.querySelector('.arrow');
     alink.addEventListener('click', flipping);
-}
-
 
 
 function changeBigPicture(event) {
@@ -57,18 +55,5 @@ function flipping(event) {
     
 }
 
-function getArrayNameFoto() {
-    let appDiv = document.querySelectorAll('.slider img');
-    let arrName = [];
-    
-    for (let i = 0; i < appDiv.length; i++) {
-        let seachNameFile = appDiv[i].src.split('/');
-        seachNameFile = seachNameFile[seachNameFile.length-1];
-        seachNameFile = seachNameFile.split('.');
-        seachNameFile = seachNameFile[0];
-        arrName.push(seachNameFile);
-    }
-    return arrName;
 }
-
 window.onload = init;
