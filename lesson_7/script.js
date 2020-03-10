@@ -6,6 +6,7 @@ var direction = "x-"; // по умолчанию змейка движется �
 var gameIsRunning = false;
 var snake_timer;
 var food_timer;
+var crash_timer;
 var score = 0;
 
 function init() {
@@ -20,12 +21,12 @@ function prepareGameField() {
   game_table.classList.add('game-table');
 
   // генерируем строки и ячейки игровой таблицы
-  for(var i = 0; i < FIELD_SIZE_X; i++) {
+  for (var i = 0; i < FIELD_SIZE_X; i++) {
     var row = document.createElement('tr');
     row.classList.add('game-table-row');
     row.dataset.row = i;
 
-    for(var j = 0; j < FIELD_SIZE_Y; j++) {
+    for (var j = 0; j < FIELD_SIZE_Y; j++) {
       var cell = document.createElement('td');
       cell.classList.add('game-table-cell');
       cell.dataset.cell = i + '-' + j;
@@ -43,13 +44,14 @@ function startGame() {
 
   snake_timer = setInterval(move, SNAKE_SPEED);
   setTimeout(createFood, 5000);
+  crash_timer = setInterval(createCrashInField, 5000);
 }
 
 // располагаем змейку на игровом поле
 function respawn() {
   // стандартная длина змейки - 2
-  var start_coord_x = Math.floor(FIELD_SIZE_X/2);
-  var start_coord_y = Math.floor(FIELD_SIZE_Y/2);
+  var start_coord_x = Math.floor(FIELD_SIZE_X / 2);
+  var start_coord_y = Math.floor(FIELD_SIZE_Y / 2);
 
   var snake_head = document.querySelector("[data-cell='" + start_coord_x + "-" + start_coord_y + "']");
   snake_head.classList.add('snake-unit');
@@ -68,37 +70,38 @@ function move() {
   var coord_y = parseInt(snake_coords[1]);
 
   // определяем новую точку
-  if(direction == "x-") {
-    new_unit = document.querySelector("[data-cell='"+ (coord_x - 1) + '-' + coord_y +"']");
+  if (direction == "x-") {
+    new_unit = document.querySelector("[data-cell='" + (coord_x - 1) + '-' + coord_y + "']");
   } else if (direction == "x+") {
-    new_unit = document.querySelector("[data-cell='"+ (coord_x + 1) + '-' + coord_y +"']");
+    new_unit = document.querySelector("[data-cell='" + (coord_x + 1) + '-' + coord_y + "']");
   } else if (direction == "y+") {
-    new_unit = document.querySelector("[data-cell='"+ coord_x + '-' + (coord_y + 1)  +"']");
+    new_unit = document.querySelector("[data-cell='" + coord_x + '-' + (coord_y + 1) + "']");
   } else if (direction == "y-") {
-    new_unit = document.querySelector("[data-cell='"+ coord_x + '-' + (coord_y - 1)  +"']");
+    new_unit = document.querySelector("[data-cell='" + coord_x + '-' + (coord_y - 1) + "']");
   }
 
   // проверяем, что new_unit – не часть змейки
   // так же проверяем, что змейка не дошла до границы
- 
-  if(!isSnakeUnit(new_unit) && new_unit !== null) {
+
+  if (!isSnakeUnit(new_unit) && new_unit !== null) {
     new_unit.classList.add('snake-unit');
     snake.push(new_unit);
 
     // если змейка не ела, убираем хвост
-    if(!haveFood(new_unit)) {
+    if (!haveFood(new_unit)) {
       var removed = snake.splice(0, 1)[0];
       removed.classList.remove('snake-unit', 'food-unit');
     }
   } else {
     finishTheGame();
   }
+
 }
 
 function isSnakeUnit(unit) {
   var check = false;
 
-  if(snake.includes(unit)) {
+  if (snake.includes(unit)) {
     check = true;
   }
   return check;
@@ -107,6 +110,7 @@ function isSnakeUnit(unit) {
 function finishTheGame() {
   gameIsRunning = false;
   clearInterval(snake_timer);
+  clearInterval(crash_timer);
   alert('GAME OVER! Score: ' + score);
 }
 
@@ -116,10 +120,10 @@ function haveFood(unit) {
   var isSnakeEating = unit.classList.contains('food-unit');
 
   // змейка съела еду
-  if(isSnakeEating) {
+  if (isSnakeEating) {
     check = true;
 
-    // создаеи новую еду
+    // создаем новую еду
     createFood();
 
     // увеличиваем количество очков
@@ -130,40 +134,71 @@ function haveFood(unit) {
 }
 
 function createFood() {
-  var foodCreated = false;
-
+  
   var food_x = Math.floor(Math.random() * (FIELD_SIZE_X));
   var food_y = Math.floor(Math.random() * (FIELD_SIZE_Y));
 
-  var food_cell = document.querySelector("[data-cell='" + food_x + '-' + food_y +"']");
+  var food_cell = document.querySelector("[data-cell='" + food_x + '-' + food_y + "']");
   var isSnake = food_cell.classList.contains('snake-unit'); // true || false
-  
+
   //если нет змейки
-  if(!isSnake) {
+  if (!isSnake) {
     food_cell.classList.add('food-unit');
-    foodCreated = true;
+    
   }
 }
 
+function createCrashInField() {
+
+
+  console.log(document.classList.contains('crash-unit'));  
+  
+  var crash_x = Math.floor(Math.random() * (FIELD_SIZE_X));
+  var crash_y = Math.floor(Math.random() * (FIELD_SIZE_Y));
+
+  var crash_cell = document.querySelector("[data-cell='" + crash_x + '-' + crash_y + "']");
+  var isSnake = crash_cell.classList.contains('snake-unit'); // true || false
+  var isFood = crash_cell.classList.contains('food-unit');
+
+  //если нет змейки и нет еды
+  if (!isSnake && !isFood) {
+    crash_cell.classList.add('crash-unit');
+  }
+}
+
+// проверяем встречу с препятствием
+function haveCrash(unit) {
+  var check = false;
+  var isSnakeCrash = unit.classList.contains('crash-unit'); //true || false
+
+  // змейка не встретила препятсятвие
+  if (!isSnakeCrash) {
+    check = true;
+    
+    createCrashInField();
+  }
+  return check;
+}
+
 function changeDirection(e) {
-  switch(e.keyCode) {
+  switch (e.keyCode) {
     case 37: // нажата клавиша влево
-      if(direction != "y+") {
+      if (direction != "y+") {
         direction = "y-";
       }
-    break;
+      break;
     case 38: // нажата клавиша вверх
-      if(direction != "x+")
-      direction = "x-";
-    break;
+      if (direction != "x+")
+        direction = "x-";
+      break;
     case 39: // нажата клавиша вправо
-      if(direction != "y-")
-      direction = "y+";
-    break;
+      if (direction != "y-")
+        direction = "y+";
+      break;
     case 40: // нажата клавиша вниз
-      if(direction != "x-")
-      direction = "x+";
-    break;
+      if (direction != "x-")
+        direction = "x+";
+      break;
   }
 }
 
