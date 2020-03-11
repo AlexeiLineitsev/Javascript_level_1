@@ -1,7 +1,10 @@
+"use strict"
 var FIELD_SIZE_X = 20;
 var FIELD_SIZE_Y = 20;
 var SNAKE_SPEED = 300; // интервал в мс между перемещениями змейки
 var snake = []; // змейка
+var crash = []; // количество препятствий
+var countCrashField = 2;
 var direction = "x-"; // по умолчанию змейка движется вверх, уменьшая координату x
 var gameIsRunning = false;
 var snake_timer;
@@ -71,19 +74,35 @@ function move() {
 
   // определяем новую точку
   if (direction == "x-") {
-    new_unit = document.querySelector("[data-cell='" + (coord_x - 1) + '-' + coord_y + "']");
+    if ((coord_x - 1) < 0) {
+      new_unit = document.querySelector("[data-cell='" + (FIELD_SIZE_X - 1) + '-' + coord_y + "']");
+    } else {
+      new_unit = document.querySelector("[data-cell='" + (coord_x - 1) + '-' + coord_y + "']");
+    }
   } else if (direction == "x+") {
-    new_unit = document.querySelector("[data-cell='" + (coord_x + 1) + '-' + coord_y + "']");
+    if ((coord_x + 1) == FIELD_SIZE_X) {
+      new_unit = document.querySelector("[data-cell='" + 0 + '-' + coord_y + "']");
+    } else {
+      new_unit = document.querySelector("[data-cell='" + (coord_x + 1) + '-' + coord_y + "']");
+    }
   } else if (direction == "y+") {
-    new_unit = document.querySelector("[data-cell='" + coord_x + '-' + (coord_y + 1) + "']");
+    if ((coord_y + 1) >= FIELD_SIZE_Y) {
+      new_unit = document.querySelector("[data-cell='" + coord_x + '-' + 0 + "']");
+    } else {
+      new_unit = document.querySelector("[data-cell='" + coord_x + '-' + (coord_y + 1) + "']");
+    }
   } else if (direction == "y-") {
-    new_unit = document.querySelector("[data-cell='" + coord_x + '-' + (coord_y - 1) + "']");
+    if ((coord_y - 1) < 0) {
+      new_unit = document.querySelector("[data-cell='" + coord_x + '-' + (FIELD_SIZE_Y - 1) + "']");
+    } else {
+      new_unit = document.querySelector("[data-cell='" + coord_x + '-' + (coord_y - 1) + "']");
+    }
   }
 
   // проверяем, что new_unit – не часть змейки
   // так же проверяем, что змейка не дошла до границы
 
-  if (!isSnakeUnit(new_unit) && new_unit !== null) {
+  if (!isSnakeUnit(new_unit)) {
     new_unit.classList.add('snake-unit');
     snake.push(new_unit);
 
@@ -92,10 +111,12 @@ function move() {
       var removed = snake.splice(0, 1)[0];
       removed.classList.remove('snake-unit', 'food-unit');
     }
-  } else {
-    finishTheGame();
-  }
 
+    if (!haveCrash(new_unit)) {
+      finishTheGame();
+    }
+
+  }
 }
 
 function isSnakeUnit(unit) {
@@ -106,7 +127,7 @@ function isSnakeUnit(unit) {
   }
   return check;
 }
-
+//конец игры
 function finishTheGame() {
   gameIsRunning = false;
   clearInterval(snake_timer);
@@ -134,7 +155,7 @@ function haveFood(unit) {
 }
 
 function createFood() {
-  
+
   var food_x = Math.floor(Math.random() * (FIELD_SIZE_X));
   var food_y = Math.floor(Math.random() * (FIELD_SIZE_Y));
 
@@ -144,15 +165,17 @@ function createFood() {
   //если нет змейки
   if (!isSnake) {
     food_cell.classList.add('food-unit');
-    
   }
 }
-
+//создаем препятствие на поле
 function createCrashInField() {
 
+  if (crash.length >= countCrashField) {
+    var removeCrash = crash.splice(0, 1)[0];
+    removeCrash.classList.remove('crash-unit');
+    console.log(crash);
+  }
 
-  console.log(document.classList.contains('crash-unit'));  
-  
   var crash_x = Math.floor(Math.random() * (FIELD_SIZE_X));
   var crash_y = Math.floor(Math.random() * (FIELD_SIZE_Y));
 
@@ -163,19 +186,18 @@ function createCrashInField() {
   //если нет змейки и нет еды
   if (!isSnake && !isFood) {
     crash_cell.classList.add('crash-unit');
+    crash.push(crash_cell);
   }
 }
 
-// проверяем встречу с препятствием
+// проверяем встречу с препятствием, возвращает true если змейка не встретила препятствий
 function haveCrash(unit) {
   var check = false;
   var isSnakeCrash = unit.classList.contains('crash-unit'); //true || false
 
-  // змейка не встретила препятсятвие
+  // змейка не встретила препятствие
   if (!isSnakeCrash) {
     check = true;
-    
-    createCrashInField();
   }
   return check;
 }
@@ -206,5 +228,6 @@ function changeDirection(e) {
 function refreshGame() {
   location.reload();
 }
+
 
 window.onload = init;
