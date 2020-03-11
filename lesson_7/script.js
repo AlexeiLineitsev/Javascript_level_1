@@ -149,7 +149,7 @@ function haveFood(unit) {
 
     // увеличиваем количество очков
     score++;
-    document.getElementById('score').innerText = 'Score ' + score;
+    document.getElementById('score').innerText = 'Score: ' + score;
   }
   return check;
 }
