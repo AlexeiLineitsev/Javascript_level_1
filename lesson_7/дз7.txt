@@ -5,3 +5,32 @@
 
     – при пересечении границы поля змейка появляется с противоположной стороны
 
+else {
+    console.log(new_unit);
+    console.log(snake);
+    snake_head = snake[1];
+    console.log(snake_head);
+    snake_coords = snake_head.dataset.cell.split('-');
+    coord_x = parseInt(snake_coords[0]);
+    coord_y = parseInt(snake_coords[1]);
+    console.log(coord_x, coord_y);
+
+    if (coord_x == 0) {
+      coord_x = FIELD_SIZE_X - 1;
+      new_unit = document.querySelector("[data-cell='" + coord_x + '-' + coord_y + "']");
+      new_unit.classList.add('snake-unit');
+      snake.splice(0, 1, new_unit);
+    }
+    
+    // если змейка не ела, убираем хвост
+    if (!haveFood(new_unit)) {
+      var removed = snake.splice(0, 1)[0];
+      removed.classList.remove('snake-unit', 'food-unit');
+    }
+
+    if (!haveCrash(new_unit)) {
+      finishTheGame();
+    }
+    
+    //finishTheGame();
+  }
