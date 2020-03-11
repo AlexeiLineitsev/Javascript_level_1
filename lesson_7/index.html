@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,15 +8,24 @@
     <title>Змейка</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div id="snake-field">
-        <div id="score"></div>
-    </div>
-    <button id="snake-start">Старт</button>
-    <button id="snake-renew">Новая игра</button>
 
+<body>
+
+    <div id="snake-field"></div>
     
+    <div>
+        <button id="snake-start">Старт</button>
+        <button id="snake-renew">Новая игра</button>
+    </div>
+
+    <div class="text">
+        <h2 class="eat">Еда</h2>
+        <h2 class="crash">Препятствия</h2>
+    </div>
+
+    <div id="score"></div>
 
     <script src="script.js"></script>
 </body>
+
 </html>
